@@ -48,7 +48,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         plotData();
 
+        Button button = (Button) findViewById(R.id.exit);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+                System.exit(0);
 
+            }
+        });
 
     }
 

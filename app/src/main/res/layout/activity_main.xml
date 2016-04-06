@@ -31,7 +31,12 @@
             android:paddingTop="20dp" >
         </LinearLayout>
 
-        
+        <Button
+            android:layout_width="59dp"
+            android:layout_height="wrap_content"
+            android:text="EXIT"
+            android:id="@+id/exit"
+            android:layout_gravity="right" />
 
 
     </LinearLayout>
