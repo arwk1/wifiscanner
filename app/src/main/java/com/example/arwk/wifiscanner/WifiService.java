@@ -18,6 +18,8 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class WifiService extends Service {
 
@@ -80,9 +82,29 @@ public class WifiService extends Service {
                 Intent intent = new Intent(Constants.INTENT_FILTER);
                 intent.putExtra(Constants.WIFI_DATA, mWifiData);
                 LocalBroadcastManager.getInstance(WifiService.this).sendBroadcast(intent);
-            } else {
+            }
+            else {
+
 
             }
         }
     }
+    //konfiguracja popupu o niewłączonej karcie bezprzewodowej
+    /*private void showSimplePopUp() {
+
+        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+        helpBuilder.setTitle("Wifi jest wyłączone");
+        helpBuilder.setMessage("Aby używać aplikacji musisz włączyć Wifi");
+        helpBuilder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing but close the dialog
+                    }
+                });
+
+        // Remember, create doesn't show the dialog
+        AlertDialog helpDialog = helpBuilder.create();
+        helpDialog.show();
+    }*/
 }

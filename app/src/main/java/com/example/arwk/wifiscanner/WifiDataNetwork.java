@@ -4,6 +4,8 @@ package com.example.arwk.wifiscanner;
  * Created by arwk on 2016-04-05.
  */
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.wifi.ScanResult;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -55,6 +57,7 @@ public class WifiDataNetwork implements Comparable<WifiDataNetwork>, Parcelable 
     public static int convertFrequencyToChannel(int freq) {
         if (freq >= 2412 && freq <= 2484) {
             return (freq - 2412) / 5 + 1;
+            //poniższe można wykasowac, ponieważ nie będziemy chyba używać częstotliwości 5Ghz
         } else if (freq >= 5170 && freq <= 5825) {
             return (freq - 5170) / 5 + 34;
         } else {
@@ -134,4 +137,5 @@ public class WifiDataNetwork implements Comparable<WifiDataNetwork>, Parcelable 
     public String toString() {
         return ssid + " addr:" + bssid + " lev:" + level + "dBm freq:" + frequency + "MHz cap:" + capabilities;
     }
+
 }

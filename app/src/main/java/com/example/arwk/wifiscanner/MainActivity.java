@@ -1,4 +1,5 @@
 package com.example.arwk.wifiscanner;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -17,6 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -24,41 +38,58 @@ import android.support.v7.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private WifiData mWifiData;
+    private static int flag = 0;
 
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifi.isWifiEnabled()) {
+        }
+        else{
+            showSimplePopUp();
+
+        }
 
 
-        mWifiData = null;
+            mWifiData = null;
 
-        // set receiver
-        MainActivityReceiver mReceiver = new MainActivityReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(Constants.APP_NAME));
+            // set receiver
+            MainActivityReceiver mReceiver = new MainActivityReceiver();
+            LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(Constants.APP_NAME));
 
-        // launch WiFi service
-        Intent intent = new Intent(this, WifiService.class);
-        startService(intent);
+            // launch WiFi service
+            Intent intent = new Intent(this, WifiService.class);
+            startService(intent);
 
-        // recover retained object
-        mWifiData = (WifiData) getLastNonConfigurationInstance();
+            // recover retained object
+            mWifiData = (WifiData) getLastNonConfigurationInstance();
 
-        // set layout
-        setContentView(R.layout.activity_main);
-        plotData();
+            // set layout
+            setContentView(R.layout.activity_main);
+            plotData();
 
-        Button button = (Button) findViewById(R.id.exit);
-        button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-                System.exit(0);
+            Button button = (Button) findViewById(R.id.exit);
+            button.setOnClickListener(new View.OnClickListener() {
 
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    System.exit(0);
+                    finish();
+                    System.exit(0);
+
+                }
+            });
+
+
+
 
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -191,5 +222,22 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+    private void showSimplePopUp() {
+
+        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+        helpBuilder.setTitle("Wifi jest wyłączone");
+        helpBuilder.setMessage("Aby używać aplikacji musisz włączyć Wifi");
+        helpBuilder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing but close the dialog
+                    }
+                });
+
+        // Remember, create doesn't show the dialog
+        AlertDialog helpDialog = helpBuilder.create();
+        helpDialog.show();
     }
 }
