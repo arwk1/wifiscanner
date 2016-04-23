@@ -1,14 +1,19 @@
 package com.example.arwk.wifiscanner;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,29 +37,46 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
+
 import android.support.v7.app.AppCompatActivity;
+
 
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private WifiData mWifiData;
     private static int flag = 0;
-
+    //private static final String PREF_IS_FIRST_RUN="pierwszeUruchomienie";
+    private SharedPreferences prefs;
+    private static final int RESULT_PERMS_INITIAL=1339; // nie mam pojęcia co oznacz cyfra
+    private static final int RESULT_PERMS_SCAN=1340;
+    private static final String PREF_IS_FIRST_RUN="firstRun";
+    private static final String[] PERMS_SCAN_WIFI={
+            //ACCESS_NETWORK_STATE,
+            //ACCESS_WIFI_STATE
+            ACCESS_FINE_LOCATION
+    };
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prefs= PreferenceManager.getDefaultSharedPreferences(this);
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        //ponizsze musiałem wyłączyć ponieważ emulator nie ma wifi a moje telefony mają api starsze niż 23 :)
         if (wifi.isWifiEnabled()) {
         }
         else{
             showSimplePopUp();
-
         }
-
-
             mWifiData = null;
-
+            if (isFirstRun() && useRuntimePermissions()){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(PERMS_SCAN_WIFI, RESULT_PERMS_SCAN);
+                }
+            }
             // set receiver
             MainActivityReceiver mReceiver = new MainActivityReceiver();
             LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(Constants.APP_NAME));
@@ -69,28 +91,24 @@ public class MainActivity extends AppCompatActivity {
             // set layout
             setContentView(R.layout.activity_main);
             plotData();
-
+            //poniżej reakcja na przycisk zamknięcia
             Button button = (Button) findViewById(R.id.exit);
             button.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     finish();
-                    System.exit(0);
-                    finish();
-                    System.exit(0);
 
+                    //finish();
+                    //System.exit(0);
+                    //finish();
+                    //System.exit(0);
                 }
             });
-
-
-
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_WIFI_STATE}, RESULT_PERMS_INITIAL);
 
     }
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -239,5 +257,20 @@ public class MainActivity extends AppCompatActivity {
         // Remember, create doesn't show the dialog
         AlertDialog helpDialog = helpBuilder.create();
         helpDialog.show();
+    }
+    private boolean isFirstRun(){
+        boolean result=prefs.getBoolean(PREF_IS_FIRST_RUN, true); //zmienione z true na false - testy
+        if (result) {
+            prefs.edit().putBoolean(PREF_IS_FIRST_RUN, false).apply();
+        }
+        return(result);
+    }
+
+    private boolean useRuntimePermissions() {
+        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        //TODO
     }
 }

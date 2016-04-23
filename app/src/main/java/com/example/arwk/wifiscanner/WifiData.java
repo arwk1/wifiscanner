@@ -41,6 +41,7 @@ public class WifiData implements Parcelable {
      * @param results
      *            list of networks detected
      */
+    //dla każdej znalezionej sieci dodaje nowy wiersz w liście
     public void addNetworks(List<ScanResult> results) {
         mNetworks.clear();
         for (ScanResult result : results) {
@@ -64,6 +65,7 @@ public class WifiData implements Parcelable {
      *         of this object.
      */
     @Override
+    //funkcja zwracająca Empty data przy braku sieci lub ilość dostępnych sieci
     public String toString() {
         if (mNetworks == null || mNetworks.size() == 0)
             return "Empty data";
@@ -74,6 +76,7 @@ public class WifiData implements Parcelable {
     /**
      * @return Returns the list of scanned networks
      */
+    //zwraca listę dostępnych sieci
     public List<WifiDataNetwork> getNetworks() {
         return mNetworks;
     }

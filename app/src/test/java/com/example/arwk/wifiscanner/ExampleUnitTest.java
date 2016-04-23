@@ -1,15 +1,23 @@
 package com.example.arwk.wifiscanner;
 
+import android.test.suitebuilder.annotation.SmallTest;
+
+import com.example.arwk.wifiscanner.WifiDataNetwork;
+
+import junit.framework.TestCase;
 import org.junit.Test;
+import org.testng.annotations.Test;
 
-import static org.junit.Assert.*;
+import java.lang.Exception;
 
-/**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
- */
+@SmallTest
 public class ExampleUnitTest {
+
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void testAddition_isCorrect() throws Exception {
+        assert(1 == 3);
+    }
+    public void testKanalCzestotliwosc() throws Exception {
+        assert(1 == WifiDataNetwork.convertFrequencyToChannel(2412));
     }
 }

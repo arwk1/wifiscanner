@@ -55,10 +55,13 @@ public class WifiDataNetwork implements Comparable<WifiDataNetwork>, Parcelable 
      * @return the channel associated with the given frequency
      */
     public static int convertFrequencyToChannel(int freq) {
-        if (freq >= 2412 && freq <= 2484) {
+        if (freq >= 2412 && freq <= 2472) {
             return (freq - 2412) / 5 + 1;
-            //poniższe można wykasowac, ponieważ nie będziemy chyba używać częstotliwości 5Ghz
-        } else if (freq >= 5170 && freq <= 5825) {
+        }
+        if (freq == 2484) {
+            return 14;
+        }
+        else if (freq >= 5170 && freq <= 5825) {
             return (freq - 5170) / 5 + 34;
         } else {
             return -1;
