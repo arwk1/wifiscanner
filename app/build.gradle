@@ -1,8 +1,17 @@
+buildscript {
+    repositories {
+        jcenter() // or mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.example.arwk.wifiscanner"
@@ -25,3 +34,4 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
 }
+

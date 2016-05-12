@@ -9,6 +9,11 @@ import android.content.DialogInterface;
 import android.net.wifi.ScanResult;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.Toast;
+
+import com.example.arwk.wifiscanner.CustomException;
+
+import java.io.IOException;
 
 public class WifiDataNetwork implements Comparable<WifiDataNetwork>, Parcelable {
     private String bssid;
@@ -17,6 +22,9 @@ public class WifiDataNetwork implements Comparable<WifiDataNetwork>, Parcelable 
     private int frequency;
     private int level;
     private long timestamp;
+    static int blad;
+
+
 
     public WifiDataNetwork(ScanResult result) {
         bssid = result.BSSID;
@@ -25,6 +33,7 @@ public class WifiDataNetwork implements Comparable<WifiDataNetwork>, Parcelable 
         frequency = result.frequency;
         level = result.level;
         timestamp = System.currentTimeMillis();
+
     }
 
     public WifiDataNetwork(Parcel in) {
@@ -46,27 +55,35 @@ public class WifiDataNetwork implements Comparable<WifiDataNetwork>, Parcelable 
         }
     };
 
-    /**
-     * Converts a WiFi frequency to the corresponding channel.
-     *
-     * @param freq
-     *            frequency as given by
-     *            {@link android.net.wifi.ScanResult.frequency}
-     * @return the channel associated with the given frequency
-     */
-    public static int convertFrequencyToChannel(int freq) {
+
+    public static float convertFrequencyToChannel(int freq){
         if (freq >= 2412 && freq <= 2472) {
-            return (freq - 2412) / 5 + 1;
+            float return1 = (freq - 2412f) / 5f + 1f;
+            return return1;
         }
         if (freq == 2484) {
             return 14;
         }
-        else if (freq >= 5170 && freq <= 5825) {
-            return (freq - 5170) / 5 + 34;
-        } else {
-            return -1;
+        if (freq >= 5170 && freq <= 5825) {
+            float return1 = (freq - 5170f) / 5f + 34f;
+            return return1;
         }
+        else
+            try {
+                //throw new RuntimeException("blad");
+                throw new CustomException("blad");
+            }
+            catch(CustomException e){
+                blad = freq;
+            }
+        return -1;
+
     }
+
+
+
+
+
 
     public String getBssid() {
         return bssid;

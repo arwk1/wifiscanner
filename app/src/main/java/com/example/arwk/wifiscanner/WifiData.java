@@ -14,7 +14,7 @@ import android.os.Parcelable;
 
 public class WifiData implements Parcelable {
     private List<WifiDataNetwork> mNetworks;
-
+    public int blad;
     public WifiData() {
         mNetworks = new ArrayList<WifiDataNetwork>();
     }

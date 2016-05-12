@@ -36,10 +36,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.support.v4.widget.DrawerLayout;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -55,11 +58,24 @@ public class MainActivity extends AppCompatActivity {
     private static final int RESULT_PERMS_SCAN=1340;
     private static final String PREF_IS_FIRST_RUN="firstRun";
     private static final String[] PERMS_SCAN_WIFI={
-            //ACCESS_NETWORK_STATE,
-            //ACCESS_WIFI_STATE
-            ACCESS_FINE_LOCATION
+            ACCESS_NETWORK_STATE,
+            ACCESS_WIFI_STATE,
+            ACCESS_FINE_LOCATION,
+
     };
+
+
     @SuppressWarnings("deprecation")
+
+    /*protected void onResume(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (isFirstRun() && useRuntimePermissions()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(PERMS_SCAN_WIFI, RESULT_PERMS_SCAN);
+            }
+        }
+
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,11 +88,7 @@ public class MainActivity extends AppCompatActivity {
             showSimplePopUp();
         }
             mWifiData = null;
-            if (isFirstRun() && useRuntimePermissions()){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(PERMS_SCAN_WIFI, RESULT_PERMS_SCAN);
-                }
-            }
+
             // set receiver
             MainActivityReceiver mReceiver = new MainActivityReceiver();
             LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(Constants.APP_NAME));
@@ -107,13 +119,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_WIFI_STATE}, RESULT_PERMS_INITIAL);
-
+        if (isFirstRun() && useRuntimePermissions()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(PERMS_SCAN_WIFI, RESULT_PERMS_SCAN);
+            }
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
         return true;
     }
 
@@ -197,7 +212,17 @@ public class MainActivity extends AppCompatActivity {
                 ssidVal.setText(net.getSsid());
 
                 TextView chVal = new TextView(this);
-                chVal.setText(String.valueOf(WifiDataNetwork.convertFrequencyToChannel(net.getFrequency())));
+                try{
+                    chVal.setText(String.valueOf(WifiDataNetwork.convertFrequencyToChannel(net.getFrequency())));
+                }
+                catch (RuntimeException wyjatek ){
+                    Toast toast = Toast.makeText(getApplicationContext(), "Jedna z sieci z poza zakresu",Toast.LENGTH_SHORT );
+                    toast.show();
+                }
+
+
+
+                //chVal.setText(String.valueOf(WifiDataNetwork.convertFrequencyToChannel(net.getFrequency())));
 
                 TextView rxVal = new TextView(this);
                 rxVal.setText(String.valueOf(net.getLevel()));
@@ -273,4 +298,5 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         //TODO
     }
+
 }

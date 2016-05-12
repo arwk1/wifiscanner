@@ -11,13 +11,19 @@ import org.testng.annotations.Test;
 import java.lang.Exception;
 
 @SmallTest
-public class ExampleUnitTest {
+public class ExampleUnitTest1 {
 
     @Test
     public void testAddition_isCorrect() throws Exception {
-        assert(1 == 3);
+        assert(2 == 3);
     }
-    public void testKanalCzestotliwosc() throws Exception {
-        assert(1 == WifiDataNetwork.convertFrequencyToChannel(2412));
+
+
+
+
+
+
+
+
     }
 }
