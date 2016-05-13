@@ -18,21 +18,17 @@ public class WifiData implements Parcelable {
     public WifiData() {
         mNetworks = new ArrayList<WifiDataNetwork>();
     }
-
     public WifiData(Parcel in) {
         in.readTypedList(mNetworks, WifiDataNetwork.CREATOR);
     }
-
     public static final Parcelable.Creator<WifiData> CREATOR = new Parcelable.Creator<WifiData>() {
         public WifiData createFromParcel(Parcel in) {
             return new WifiData(in);
         }
-
         public WifiData[] newArray(int size) {
             return new WifiData[size];
         }
     };
-
     /**
      * Stores the last WiFi scan performed by {@link
      * WifiManager.getScanResults()} creating a {@link WifiDataNetwork()} object

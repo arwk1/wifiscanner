@@ -1,9 +1,9 @@
 package com.example.arwk.wifiscanner;
 
-import android.Manifest;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -13,38 +13,26 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.text.method.PasswordTransformationMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
-import android.support.v4.widget.DrawerLayout;
+import android.content.Intent;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-
-
-import android.support.v7.app.AppCompatActivity;
 
 
 
@@ -64,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
 
     @SuppressWarnings("deprecation")
 
@@ -79,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         prefs= PreferenceManager.getDefaultSharedPreferences(this);
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         //ponizsze musiałem wyłączyć ponieważ emulator nie ma wifi a moje telefony mają api starsze niż 23 :)
@@ -124,7 +115,14 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(PERMS_SCAN_WIFI, RESULT_PERMS_SCAN);
             }
         }
+
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        addDrawerItems();
+
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -298,5 +296,31 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         //TODO
     }
+
+    private void addDrawerItems() {
+        String[] osArray = { "Ustawienia", "O autorze" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            Intent intent = null;
+            switch(position){
+                case 0:
+                    intent = new Intent(getApplicationContext(), stawienia.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(getApplicationContext(), autorze.class);
+                    startActivity(intent);
+                    break;
+                default:
+            }
+        }
+        });
+    }
+
+
 
 }

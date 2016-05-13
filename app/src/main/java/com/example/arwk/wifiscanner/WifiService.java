@@ -4,12 +4,6 @@ package com.example.arwk.wifiscanner;
  * Created by arwk on 2016-04-05.
  */
 
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +12,14 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class WifiService extends Service {
 
@@ -32,6 +32,8 @@ public class WifiService extends Service {
 
     private long initialDelay = 500;
     private long periodReader = 3 * 1000;
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
 
     /**
      * It creates a new Thread that it is executed periodically reading the last
@@ -41,10 +43,15 @@ public class WifiService extends Service {
     public void onCreate() {
         mWifiData = new WifiData();
         mWifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-        mScheduler = Executors.newScheduledThreadPool(1);
+        mScheduler = Executors.newScheduledThreadPool(5);
+
 
         scheduleReaderHandle = mScheduler.scheduleAtFixedRate(new ScheduleReader(), initialDelay, periodReader,
                 TimeUnit.MILLISECONDS);
+
+    }
+
+    private void addDrawerItems() {
     }
 
     /**
@@ -88,6 +95,7 @@ public class WifiService extends Service {
 
             }
         }
+
     }
     //konfiguracja popupu o niewłączonej karcie bezprzewodowej
     /*private void showSimplePopUp() {
