@@ -21,14 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".oautorze"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ustawienia"
             android:screenOrientation="portrait" />
-        <activity android:name=".autorze" />
-        <activity android:name=".stawienia" />
+        <activity
+            android:name=".autorze"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

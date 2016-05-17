@@ -97,22 +97,5 @@ public class WifiService extends Service {
         }
 
     }
-    //konfiguracja popupu o niewłączonej karcie bezprzewodowej
-    /*private void showSimplePopUp() {
 
-        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-        helpBuilder.setTitle("Wifi jest wyłączone");
-        helpBuilder.setMessage("Aby używać aplikacji musisz włączyć Wifi");
-        helpBuilder.setPositiveButton("Ok",
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing but close the dialog
-                    }
-                });
-
-        // Remember, create doesn't show the dialog
-        AlertDialog helpDialog = helpBuilder.create();
-        helpDialog.show();
-    }*/
 }

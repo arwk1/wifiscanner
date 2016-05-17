@@ -8,13 +8,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
+//import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class WifiData implements Parcelable {
+    //Context context;
+    //int ustawieniab;
+    //int ustawieniaa;
+    //SharedPreferences sharedPref;
     private List<WifiDataNetwork> mNetworks;
-    public int blad;
     public WifiData() {
         mNetworks = new ArrayList<WifiDataNetwork>();
     }
@@ -28,10 +33,11 @@ public class WifiData implements Parcelable {
         public WifiData[] newArray(int size) {
             return new WifiData[size];
         }
+
     };
     /**
      * Stores the last WiFi scan performed by {@link
-     * WifiManager.getScanResults()} creating a {@link WifiDataNetwork()} object
+     //* WifiManager.getScanResults()} creating a {@link WifiDataNetwork()} object
      * for each network detected.
      *
      * @param results
@@ -40,10 +46,24 @@ public class WifiData implements Parcelable {
     //dla każdej znalezionej sieci dodaje nowy wiersz w liście
     public void addNetworks(List<ScanResult> results) {
         mNetworks.clear();
+
         for (ScanResult result : results) {
-            mNetworks.add(new WifiDataNetwork(result));
+            //this.context = context;
+            //context.getSharedPreferences("testb", ustawieniab);
+            //context.getSharedPreferences("testa", ustawieniaa);
+            //if(ustawieniab == 1 ) {
+                //if (result.frequency < 2500) {
+                    mNetworks.add(new WifiDataNetwork(result));
+               // }
+            //}
+            //if(ustawieniaa == 1){
+                //if(result.frequency > 2500){
+                 //   mNetworks.add(new WifiDataNetwork(result));
+                //}
+           // }
         }
         Collections.sort(mNetworks);
+
     }
 
     @Override
@@ -76,4 +96,5 @@ public class WifiData implements Parcelable {
     public List<WifiDataNetwork> getNetworks() {
         return mNetworks;
     }
+
 }

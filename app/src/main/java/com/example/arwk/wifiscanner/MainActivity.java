@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             ACCESS_FINE_LOCATION,
 
     };
-
+    public static  Context contextOfApplication;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
 
@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(PERMS_SCAN_WIFI, RESULT_PERMS_SCAN);
             }
         }
-
     }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,37 +77,37 @@ public class MainActivity extends AppCompatActivity {
         else{
             showSimplePopUp();
         }
-            mWifiData = null;
+        mWifiData = null;
 
-            // set receiver
-            MainActivityReceiver mReceiver = new MainActivityReceiver();
-            LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(Constants.APP_NAME));
+        // set receiver
+        MainActivityReceiver mReceiver = new MainActivityReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(Constants.APP_NAME));
 
-            // launch WiFi service
-            Intent intent = new Intent(this, WifiService.class);
-            startService(intent);
+        // launch WiFi service
+        Intent intent = new Intent(this, WifiService.class);
+        startService(intent);
 
-            // recover retained object
-            mWifiData = (WifiData) getLastNonConfigurationInstance();
+        // recover retained object
+        mWifiData = (WifiData) getLastNonConfigurationInstance();
 
-            // set layout
-            setContentView(R.layout.activity_main);
-            plotData();
-            //poniżej reakcja na przycisk zamknięcia
-            Button button = (Button) findViewById(R.id.exit);
-            button.setOnClickListener(new View.OnClickListener() {
+        // set layout
+        setContentView(R.layout.activity_main);
+        plotData();
+        //poniżej reakcja na przycisk zamknięcia
+        Button button = (Button) findViewById(R.id.exit);
+        button.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    finish();
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                finish();
 
-                    //finish();
-                    //System.exit(0);
-                    //finish();
-                    //System.exit(0);
-                }
-            });
+                //finish();
+                //System.exit(0);
+                //finish();
+                //System.exit(0);
+            }
+        });
         //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_WIFI_STATE}, RESULT_PERMS_INITIAL);
         if (isFirstRun() && useRuntimePermissions()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -303,21 +302,21 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-        @Override
+            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-            Intent intent = null;
-            switch(position){
-                case 0:
-                    intent = new Intent(getApplicationContext(), stawienia.class);
-                    startActivity(intent);
-                    break;
-                case 1:
-                    intent = new Intent(getApplicationContext(), autorze.class);
-                    startActivity(intent);
-                    break;
-                default:
+                Intent intent = null;
+                switch(position){
+                    case 0:
+                        intent = new Intent(getApplicationContext(), ustawienia.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(getApplicationContext(), autorze.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                }
             }
-        }
         });
     }
 
