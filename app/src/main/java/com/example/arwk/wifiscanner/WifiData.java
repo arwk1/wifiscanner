@@ -7,18 +7,22 @@ package com.example.arwk.wifiscanner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.jar.Manifest;
 
+import android.app.Activity;
 import android.content.Context;
 //import android.content.SharedPreferences;
+import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 
 public class WifiData implements Parcelable {
-    //Context context;
-    //int ustawieniab;
-    //int ustawieniaa;
-    //SharedPreferences sharedPref;
+    Context context;
+    boolean DwaCztery;
+    boolean Piec;
+    //Context apllicationContext = MainActivity.getContextOfApplication();
     private List<WifiDataNetwork> mNetworks;
     public WifiData() {
         mNetworks = new ArrayList<WifiDataNetwork>();
@@ -45,26 +49,28 @@ public class WifiData implements Parcelable {
      */
     //dla każdej znalezionej sieci dodaje nowy wiersz w liście
     public void addNetworks(List<ScanResult> results) {
+
         mNetworks.clear();
 
         for (ScanResult result : results) {
-            //this.context = context;
-            //context.getSharedPreferences("testb", ustawieniab);
-            //context.getSharedPreferences("testa", ustawieniaa);
-            //if(ustawieniab == 1 ) {
-                //if (result.frequency < 2500) {
-                    mNetworks.add(new WifiDataNetwork(result));
-               // }
-            //}
-            //if(ustawieniaa == 1){
-                //if(result.frequency > 2500){
-                 //   mNetworks.add(new WifiDataNetwork(result));
-                //}
-           // }
-        }
-        Collections.sort(mNetworks);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.contextOfApplication);
+            Integer check1val = sharedPreferences.getInt("CheckBox_Val1", -1);
+            Integer check2Val = sharedPreferences.getInt("CheckBox_Val2", -1);
+            if(check1val == 1){
+                if(result.frequency < 2500){
+                mNetworks.add(new WifiDataNetwork(result));}}
 
-    }
+            //if(check2Val == 1){
+            //    if(result.frequency > 2500){
+                //mNetworks.add(new WifiDataNetwork(result));}//}
+
+        }
+                //mNetworks.add(new WifiDataNetwork(result));
+
+
+            Collections.sort(mNetworks);
+        }
+
 
     @Override
     public int describeContents() {
@@ -96,5 +102,4 @@ public class WifiData implements Parcelable {
     public List<WifiDataNetwork> getNetworks() {
         return mNetworks;
     }
-
 }

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private WifiData mWifiData;
     private static int flag = 0;
-    //private static final String PREF_IS_FIRST_RUN="pierwszeUruchomienie";
+    public static Context context;
     private SharedPreferences prefs;
     private static final int RESULT_PERMS_INITIAL=1339; // nie mam pojęcia co oznacz cyfra
     private static final int RESULT_PERMS_SCAN=1340;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        contextOfApplication = getApplicationContext();
         prefs= PreferenceManager.getDefaultSharedPreferences(this);
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         //ponizsze musiałem wyłączyć ponieważ emulator nie ma wifi a moje telefony mają api starsze niż 23 :)
@@ -318,6 +318,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
     }
 
 
